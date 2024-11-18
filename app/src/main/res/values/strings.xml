@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">West Agent 2</string>
+    <string name="app_name" translatable="false">West Agent 2</string>
+    <string name="orders_screen_title">Документи</string>
+    <string name="searchBar_orders_placeholder">Шукати документи</string>
+    <string name="in_progress">В роботі</string>
+    <string name="ready">Готові</string>
+    <string name="sent">Відправлені</string>
+    <string name="sort">Сортувати</string>
+    <string name="filter">Фільтрувати</string>
+    <string name="new_order">Нове замовлення</string>
+    <string name="send_all_orders">Надіслати всі замовлення</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_products">ProductsActivity</string>
+    <string name="price_list">Прайс-лист</string>
+    <string name="title_activity_orders_screen">OrdersScreen</string>
+    <string name="title_activity_login_screen">LoginScreen</string>
+    <string name="account_screen_title">Акаунт агента</string>
+    <string name="logout">Вийти з акаунту</string>
+    <string name="login_screen_title">Логін</string>
+    <string name="logout_confirmation_title">Підтвердження</string>
+    <string name="logout_confirmation_text">Вийти з акаунту?</string>
+    <string name="yes">Так</string>
+    <string name="cancel">Відмінити</string>
 </resources>

@@ -1,7 +1,8 @@
-package com.example.westagent2
+package com.example.westagent2.utilities
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.example.westagent2.R
 
 enum class OrderStatus {
     IN_PROGRESS,

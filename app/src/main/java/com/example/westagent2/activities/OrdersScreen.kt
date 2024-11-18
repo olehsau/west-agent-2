@@ -19,6 +19,8 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,11 +39,14 @@ import androidx.compose.ui.unit.dp
 import com.example.westagent2.R
 import com.example.westagent2.utilities.FullWidthButton
 import com.example.westagent2.utilities.OrderStatus
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun OrdersScreen(){
-    val coroutineScope = rememberCoroutineScope()
+fun OrdersScreen(
+    drawerState: DrawerState,
+    coroutineScope: CoroutineScope
+){
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
             modifier = Modifier
@@ -54,7 +59,7 @@ fun OrdersScreen(){
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
+                IconButton(onClick = { coroutineScope.launch { drawerState.open() }}) {
                     Icon(Icons.Default.Menu, contentDescription = "Menu")
                 }
                 Text(
@@ -98,18 +103,20 @@ fun OrdersScreen(){
             ) {
                 FullWidthButton(
                     stringResource(R.string.sort),
+                    onClick = {},
                     modifier = Modifier.weight(1f)
                 )
                 FullWidthButton(
                     stringResource(R.string.filter),
+                    onClick = {},
                     modifier = Modifier.weight(1f),
                     isPrimary = false
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            FullWidthButton(stringResource(R.string.new_order))
+            FullWidthButton(stringResource(R.string.new_order), onClick = {})
             Spacer(modifier = Modifier.height(8.dp))
-            FullWidthButton(stringResource(R.string.send_all_orders))
+            FullWidthButton(stringResource(R.string.send_all_orders), onClick = {})
         }
     }
 }
@@ -164,6 +171,6 @@ fun OrderItem(name: String, details: String, status: OrderStatus) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun OrdersScreenPreview() {
-    OrdersScreen()
+    OrdersScreen(drawerState = DrawerState(DrawerValue.Closed), coroutineScope = rememberCoroutineScope())
 }
 

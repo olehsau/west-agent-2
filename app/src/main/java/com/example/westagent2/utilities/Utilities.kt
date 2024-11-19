@@ -4,6 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import org.simpleframework.xml.core.Persister
+
+
+fun <T> parseXml(xml: String, clazz: Class<T>): T {
+    val serializer = Persister()
+    return serializer.read(clazz, xml)
+}
 
 // Initialize MasterKey and EncryptedSharedPreferences
 fun getEncryptedSharedPreferences(context: Context): SharedPreferences {

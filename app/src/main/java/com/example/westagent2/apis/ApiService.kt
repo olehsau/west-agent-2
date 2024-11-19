@@ -7,8 +7,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import java.io.ByteArrayInputStream
@@ -36,11 +34,12 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     fun getSession(@Body requestBody: RequestBodyData?): Call<ResponseBody> // Use ResponseBody for raw response
 
-    @FormUrlEncoded
     @POST("AgentService/GetDataFile")
+    @Headers("Content-Type: application/json")
     suspend fun getProductData(
-        @Field("data") data: String,
-        @Field("scode") scode: Int = 10387
+        //@Field("data") data: String,
+        //@Field("scode") scode: Int = 10387
+        @Body requestBody: RequestBodyData?
     ): Response<ResponseBody>
 }
 

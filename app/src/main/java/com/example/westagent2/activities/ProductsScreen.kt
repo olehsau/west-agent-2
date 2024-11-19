@@ -19,15 +19,22 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.westagent2.R
+import com.example.westagent2.apis.getProductsFromServerToDatabase
+import com.example.westagent2.db.AppDatabase
+import com.example.westagent2.db.dataentities.Product
 import com.example.westagent2.utilities.FullWidthButton
+import com.example.westagent2.utilities.getSessionIdLocally
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -37,6 +44,9 @@ fun ProductsScreen(
     drawerState: DrawerState,
     coroutineScope: CoroutineScope
 ){
+    val context = LocalContext.current
+    var productsList = remember { mutableStateListOf<Product>() }
+
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
@@ -56,7 +66,23 @@ fun ProductsScreen(
                 modifier = Modifier
                     .weight(1f)
             )
-            IconButton(onClick = { /* Refresh Action */ }) {
+            IconButton(onClick = {
+                coroutineScope.launch {
+                    getProductsFromServerToDatabase(
+                        context,
+                        getSessionIdLocally(context) ?: "",
+                        onError = {
+
+                        },
+                        onSuccess = {
+                            productsList.clear()
+                            coroutineScope.launch {
+                                productsList.addAll(AppDatabase.getInstance(context).productDao().getAllProducts())
+                            }
+                        }
+                    )
+                }
+            }) {
                 Icon(
                     Icons.Default.Refresh, contentDescription = "Refresh",
                 )
@@ -69,11 +95,15 @@ fun ProductsScreen(
         }
 
         // Products List
-        ProductItem("Laptop", "In stock: 10", "$999.99")
-        ProductItem("Smartphone", "In stock: 25", "$699.99")
-        ProductItem("Headphones", "In stock: 50", "$199.99")
-        ProductItem("Monitor", "In stock: 8", "$249.99")
-        ProductItem("Keyboard", "In stock: 30", "$79.99")
+//        ProductItem("Laptop", "In stock: 10", "$999.99")
+//        ProductItem("Smartphone", "In stock: 25", "$699.99")
+//        ProductItem("Headphones", "In stock: 50", "$199.99")
+//        ProductItem("Monitor", "In stock: 8", "$249.99")
+//        ProductItem("Keyboard", "In stock: 30", "$79.99")
+        productsList.forEach { product -> run {
+            ProductItem(product.name, "In stock: unknown", "${product.price}")
+        }
+        }
 
         // Bottom Buttons
         Spacer(modifier = Modifier.weight(1f))

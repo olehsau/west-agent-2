@@ -28,44 +28,18 @@ data class ProductResponse(
 // Product Entity with XML Annotations
 @Entity(tableName = "products")
 data class Product(
-    @PrimaryKey
-    @field:Element(name = "a")
-    val id: Int,
-
-    @field:Element(name = "d", required = false)
+    @PrimaryKey val id: Int,
     val group_id: Int?,
-
-    @field:Element(name = "e", required = false)
     val brand_id: Int?,
-
-    @field:Element(name = "pricegroup", required = false)
     val pricegroup: Int?,
-
-    @field:Element(name = "b")
     val name: String,
-
-    @field:Element(name = "f")
     val price: Double,
-
-    @field:Element(name = "g", required = false)
     val baseunit: Int,
-
-    @field:Element(name = "h", required = false)
     val caseunit: Int,
-
-    @field:Element(name = "i", required = false)
     val casesize: Float,
-
-    @field:Element(name = "j", required = false)
     val stock: Double,
-
-    @field:Element(name = "k", required = false)
     val color: Int,
-
-    @field:Element(name = "c", required = false)
     val status: Int,
-
-    @field:Element(name = "m", required = false)
     val barcode: String?
 )
 

@@ -88,7 +88,7 @@ fun ProductsScreen(
                                 val products = AppDatabase.getInstance(context).productDao().getAllProducts()
                                 // Using Dispatchers.Main to update the UI on the main thread
                                 withContext(Dispatchers.Main) {
-                                    productsList.clear()
+                                    //productsList.clear()
                                     productsList.addAll(products)
                                 }
                             }

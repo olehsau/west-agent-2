@@ -1,5 +1,6 @@
 package com.example.westagent2.activities
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -36,7 +38,9 @@ import com.example.westagent2.db.dataentities.Product
 import com.example.westagent2.utilities.FullWidthButton
 import com.example.westagent2.utilities.getSessionIdLocally
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @Composable
@@ -46,6 +50,8 @@ fun ProductsScreen(
 ){
     val context = LocalContext.current
     var productsList = remember { mutableStateListOf<Product>() }
+    var error = remember { mutableStateOf(false) }
+    var errorMessage = remember{ mutableStateOf("") }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -71,29 +77,52 @@ fun ProductsScreen(
                     getProductsFromServerToDatabase(
                         context,
                         getSessionIdLocally(context) ?: "",
-                        onError = {
-
+                        onFailure = {message ->
+                            error.value = true
+                            errorMessage.value = message
                         },
                         onSuccess = {
-                            productsList.clear()
-                            coroutineScope.launch {
-                                productsList.addAll(AppDatabase.getInstance(context).productDao().getAllProducts())
+                            error.value = false
+                            // Using a coroutine to perform the database operation on the IO thread
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val products = AppDatabase.getInstance(context).productDao().getAllProducts()
+                                // Using Dispatchers.Main to update the UI on the main thread
+                                withContext(Dispatchers.Main) {
+                                    //productsList.clear()
+                                    productsList.addAll(products)
+                                }
                             }
                         }
                     )
                 }
             }) {
                 Icon(
-                    Icons.Default.Refresh, contentDescription = "Refresh",
+                    Icons.Default.Refresh, contentDescription = "Оновити",
                 )
             }
-            IconButton(onClick = { /* Search Action */ }) {
+            IconButton(onClick = {
+                //temp
+                CoroutineScope(Dispatchers.IO).launch {
+                    var products = AppDatabase.getInstance(context).productDao().getAllProducts()
+                    withContext(Dispatchers.Main) {
+                        Log.d("product", products.get(0).toString())
+                        Log.d("product", products.get(1).toString())
+                        Log.d("product", products.get(2).toString())
+                        Log.d("product", products.get(3).name)
+                    }
+                }
+            }) {
                 Icon(
-                    Icons.Default.Search, contentDescription = "Search",
+                    Icons.Default.Search, contentDescription = "Пошук",
                 )
             }
         }
-
+        if(error.value==true) {
+            Text(
+                text = "Помилка завантаження нових даних з сервера:\n$errorMessage",
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         // Products List
 //        ProductItem("Laptop", "In stock: 10", "$999.99")
 //        ProductItem("Smartphone", "In stock: 25", "$699.99")

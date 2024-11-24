@@ -21,4 +21,6 @@
     <string name="logout_confirmation_text">Вийти з акаунту?</string>
     <string name="yes">Так</string>
     <string name="cancel">Відмінити</string>
+    <string name="not_logged_in_error_message">Ви не залоговані. Не можна завантажити дані</string>
+    <string name="empty_response_error_message">Помилка: отримано пусту відповідь з сервера</string>
 </resources>

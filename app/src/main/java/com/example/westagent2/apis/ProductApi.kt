@@ -2,6 +2,7 @@ package com.example.westagent2.apis
 
 import android.content.Context
 import android.util.Log
+import com.example.westagent2.R
 import com.example.westagent2.apis.RetrofitInstance.apiService
 import com.example.westagent2.db.AppDatabase
 import com.example.westagent2.db.dataentities.Product
@@ -28,7 +29,7 @@ suspend fun getProductsFromServerToDatabase(context: Context,
         if (response.isSuccessful) {
             val rawResponse = response.body()?.string()
             if (rawResponse.isNullOrEmpty()) {
-                onFailure("Ви не залоговані. Не можна завантажити дані")
+                onFailure(context.getString(R.string.not_logged_in_error_message))
                 return
             }
             rawResponse?.let {
@@ -40,7 +41,7 @@ suspend fun getProductsFromServerToDatabase(context: Context,
                 // Decompress the Body
                 val decompressedBody = decodeAndDecompress(compressedBody)
                 if (decompressedBody.isNullOrEmpty()) {
-                    onFailure("error: response body is empty")
+                    onFailure(context.getString(R.string.empty_response_error_message))
                     return
                 }
 

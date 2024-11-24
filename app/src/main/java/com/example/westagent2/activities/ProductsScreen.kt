@@ -97,7 +97,7 @@ fun ProductsScreen(
                 }
             }) {
                 Icon(
-                    Icons.Default.Refresh, contentDescription = "Refresh",
+                    Icons.Default.Refresh, contentDescription = "Оновити",
                 )
             }
             IconButton(onClick = {
@@ -113,7 +113,7 @@ fun ProductsScreen(
                 }
             }) {
                 Icon(
-                    Icons.Default.Search, contentDescription = "Search",
+                    Icons.Default.Search, contentDescription = "Пошук",
                 )
             }
         }
